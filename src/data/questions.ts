@@ -30,7 +30,6 @@ export const questions = [
             'Using state',
             'Using useEffect',
             'Using props',
-            'Using context'
         ],
         correct: 2,
     },
