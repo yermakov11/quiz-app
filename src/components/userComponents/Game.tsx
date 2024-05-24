@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { questions } from "../../data/questions";
 
 interface Question {
   title: string;
@@ -16,7 +15,7 @@ export default function Game({ question, onClickVariant }: QuestionProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [next, setNext] = useState<number>(1);
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>,index: number) => {
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     setSelectedIndex(index);
   };
 
@@ -33,7 +32,7 @@ export default function Game({ question, onClickVariant }: QuestionProps) {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form onSubmit={handleSubmit} className="flex flex-col items-center p-4 max-w-xl w-full mx-auto bg-white rounded shadow-md">
         <h3 className="text-2xl font-bold mb-4 text-center">
-          Question {next} of {questions.length}
+          Question {next} 
         </h3>
         <h2 className="text-2xl font-bold mb-4 text-center">
           {question.title}
