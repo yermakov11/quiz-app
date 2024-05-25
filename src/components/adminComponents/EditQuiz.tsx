@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getItem, setItem } from "../../utils/localStorage";
+import Search from "../Search";
 
 interface Question {
   title: string;
@@ -7,37 +9,50 @@ interface Question {
 }
 
 interface EditQuizProps {
-  questions: Question[];
+  question: Question[];
   setQuestions: React.Dispatch<React.SetStateAction<Question[]>>;
 }
 
-export default function EditQuiz({ questions, setQuestions }: EditQuizProps) {
+export default function EditQuiz({ question, setQuestions }: EditQuizProps) {
   const [newQuestion, setNewQuestion] = useState<Question>({
     title: "",
     variants: [""],
     correct: 0,
   });
 
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    const storedQuestions = getItem("quizQuestions");
+    if (storedQuestions) {
+      setQuestions(storedQuestions);
+    }
+  }, []);
+
+  useEffect(() => {
+    setItem("quizQuestions", question);
+  }, [question]);
+
   const addQuestion = () => {
-    setQuestions([...questions, newQuestion]);
+    setQuestions([...question, newQuestion]);
     setNewQuestion({ title: "", variants: [""], correct: 0 });
   };
 
   const removeQuestion = (index: number) => {
-    setQuestions(questions.filter((_, i) => i !== index));
+    setQuestions(question.filter((_, i) => i !== index));
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index?: number, variantIndex?: number) => {
     const { name, value } = event.target;
     if (index !== undefined && variantIndex === undefined) {
-      const updatedQuestions = [...questions];
+      const updatedQuestions = [...question];
       updatedQuestions[index] = {
         ...updatedQuestions[index],
         [name]: value,
       };
       setQuestions(updatedQuestions);
     } else if (variantIndex !== undefined && index !== undefined) {
-      const updatedQuestions = [...questions];
+      const updatedQuestions = [...question];
       updatedQuestions[index].variants[variantIndex] = value;
       setQuestions(updatedQuestions);
     } else {
@@ -53,7 +68,7 @@ export default function EditQuiz({ questions, setQuestions }: EditQuizProps) {
 
   const addVariant = (index?: number) => {
     if (index !== undefined) {
-      const updatedQuestions = [...questions];
+      const updatedQuestions = [...question];
       updatedQuestions[index].variants.push("");
       setQuestions(updatedQuestions);
     } else {
@@ -65,27 +80,33 @@ export default function EditQuiz({ questions, setQuestions }: EditQuizProps) {
   };
 
   const removeVariant = (index: number, variantIndex: number) => {
-    const updatedQuestions = [...questions];
+    const updatedQuestions = [...question];
     updatedQuestions[index].variants = updatedQuestions[index].variants.filter(
       (_, i) => i !== variantIndex
     );
     setQuestions(updatedQuestions);
   };
 
+  const filteredQuestions = question.filter(ques =>
+    ques.title.toLowerCase().includes(searchText.toLowerCase()) ||
+    ques.variants.some(variant => variant.toLowerCase().includes(searchText.toLowerCase()))
+  );
+
   return (
     <div className="flex flex-col items-center p-4 max-w-2xl w-full mx-auto bg-white rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-center">Manage Questions</h2>
-      {questions.map((question, index) => (
+      <Search searchText={searchText} setSearchText={setSearchText} />
+      {filteredQuestions.map((q, index) => (
         <div key={index} className="w-full mb-4 p-4 bg-gray-100 rounded">
           <input
             type="text"
             name="title"
-            value={question.title}
+            value={q.title}
             onChange={(e) => handleInputChange(e, index)}
             className="w-full p-2 mb-2 border rounded"
             placeholder="Question Title"
           />
-          {question.variants.map((variant, variantIndex) => (
+          {q.variants.map((variant, variantIndex) => (
             <div key={variantIndex} className="flex mb-2">
               <input
                 type="text"
@@ -113,11 +134,11 @@ export default function EditQuiz({ questions, setQuestions }: EditQuizProps) {
           <div className="flex mb-2">
             <select
               name="correct"
-              value={question.correct}
+              value={q.correct}
               onChange={(e) => handleInputChange(e, index)}
               className="w-full p-2 border rounded"
             >
-              {question.variants.map((_, i) => (
+              {q.variants.map((_, i) => (
                 <option key={i} value={i}>
                   {i + 1}
                 </option>

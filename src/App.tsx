@@ -5,7 +5,6 @@ import Game from "./components/userComponents/Game";
 import EditQuiz from "./components/adminComponents/EditQuiz";
 import Result from "./components/userComponents/Result";
 import Header from "./components/Header";
-
 function App() {
   const [questions, setQuestions] = useState(initialQuestions);
   const [step, setStep] = useState<number>(0);
@@ -38,7 +37,7 @@ function App() {
               )
             }
           />
-          <Route path="/admin" element={<EditQuiz questions={questions} setQuestions={setQuestions} />} />
+          <Route path="/admin" element={<EditQuiz question={questions} setQuestions={setQuestions} />} />
         </Routes>
       </BrowserRouter>
     </div>
