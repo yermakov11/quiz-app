@@ -16,6 +16,7 @@ export default function Game({ question, onClickVariant }: QuestionProps) {
   const [next, setNext] = useState<number>(1);
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    console.log(event)
     setSelectedIndex(index);
   };
 
