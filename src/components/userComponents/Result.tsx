@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 interface ResultProps {
   correctAnswers: number;
   totalQuestions: number;
@@ -12,11 +12,11 @@ const Result: React.FC<ResultProps> = ({ correctAnswers, totalQuestions }) => {
         <h2 className="text-2xl font-bold mb-4 text-center">
           You guessed {correctAnswers} out of {totalQuestions} answers
         </h2>
-        <a href="/quiz-app/">
+        <Link to="/quiz-app/">
           <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
             try again
           </button>
-        </a>
+        </Link>
       </div>
     </div>
   );
