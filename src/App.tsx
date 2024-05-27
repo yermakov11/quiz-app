@@ -25,7 +25,7 @@ function App() {
         <Header />
         <Routes>
           <Route
-            path="/"
+            caseSensitive path="/quiz-app/user"
             element={
               step !== questions.length ? (
                 <Game question={question} onClickVariant={onClickVariant} />
@@ -37,7 +37,7 @@ function App() {
               )
             }
           />
-          <Route path="/admin" element={<EditQuiz question={questions} setQuestions={setQuestions} />} />
+          <Route path="/quiz-app/admin" element={<EditQuiz question={questions} setQuestions={setQuestions} />} />
         </Routes>
       </BrowserRouter>
     </div>
