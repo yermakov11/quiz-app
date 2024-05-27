@@ -1,6 +1,7 @@
 # Quiz App
 
 This is a quiz app for taking a test. The application has two pages: one for the user and one for the administrator.
+On the main page, select the role: User or Administrator 
 
 ## User Functions
 
